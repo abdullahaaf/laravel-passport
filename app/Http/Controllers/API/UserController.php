@@ -15,15 +15,17 @@ class UserController extends Controller
     public $success_status 	= 200;
 
     /**
-	* login function
+	* API Login function
     */
     public function login()
     {
     	if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
     		$user 				= Auth::user();
     		$success['token'] 	= $user->createToken('nApp')->accessToken;
-    		// return response()->json(['success' => $success], $this->success_status);
             $mahasiswa          = Mahasiswa::all();
+            /**
+            * return data mahasiswa in json format
+            */
             return compact('mahasiswa');
     	}else {
     		return response()->json(['error' => 'Unautorised'], 401);
@@ -31,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-	* register function
+	* register API function
     */
     public function register(Request $request)
     {
@@ -52,8 +54,7 @@ class UserController extends Controller
     	$success['token'] 	= $user->createToken('nApp')->accessToken;
     	$success['name'] 	= $user->name;
 
-    	// return response()->json(['success' => $success], $this->success_status);
-    	echo "Sukses";
+    	return response()->json(['success' => $success], $this->success_status);
     }
 
     public function details()
